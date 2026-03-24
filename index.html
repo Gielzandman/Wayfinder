@@ -1,0 +1,75 @@
+﻿<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wayfinder</title>
+  <link rel="stylesheet" href="style.css">
+  
+</head>
+<body>
+  <header>
+    <div class="navbar">
+      <div class="brand">Wayfinder</div>
+      <div class="brand-small">Windesheim companion</div>
+      <nav class="menu">
+        <a href="index.html">Home</a>
+        <a href="map.html">Map</a>
+        <a href="">Profile</a>
+      </nav>
+    </div>
+  </header>             
+  <div id="breadcrumb" class="breadcrumb" style="display: none;">
+    <div class="breadcrumb-container">
+      <span class="step-home" onclick="showStep(1)">Waar zijn?</span>
+      <span class="breadcrumb-arrow">›</span>
+      <span id="bc-gebouw" class="step-link"></span>
+      <span class="breadcrumb-arrow hide-mobile">›</span>
+      <span id="bc-verdieping" class="step-link hide-mobile"></span>
+      <span class="breadcrumb-arrow hide-mobile">›</span>
+      <span id="bc-lokaal" class="step-link hide-mobile"></span>
+    </div>
+  </div>
+    <section id="home">
+      <h1>Home</h1>
+      <section class="header-text">
+        <div class="main-header-text">Waar moet je zijn?</div>
+      </section> 
+      <section class="zoeken">
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Zoek een lokaal, gebouw of faciliteit..."
+            autocomplete="off"
+        >
+      </section>
+      <section id="results"></section>
+    </section>
+
+    <section id="gebouw" style="display: none;">
+      <h1>Gebouw kiezen</h1>
+      <div class="step-indicator">Stap 2 van 4</div>
+      <div id="gebouwen-list" class="grid-three"></div>
+      <button class="back-btn" onclick="goBack()">← Terug</button>
+    </section>
+
+    <section id="verdieping" style="display: none;">
+      <h1>Verdieping kiezen</h1>
+      <div class="step-indicator">Stap 3 van 4</div>
+      <div id="verdiepingen-list" class="grid-three"></div>
+      <button class="back-btn" onclick="goBack()">← Terug</button>
+    </section>
+
+    <section id="lokaal" style="display: none;">
+      <h1>Lokaal kiezen</h1>
+      <div class="step-indicator">Stap 4 van 4</div>
+      <div id="lokalen-list" class="grid-three"></div>
+      <div class="actions">
+        <button class="back-btn" onclick="goBack()">← Terug</button>
+        <button class="next-btn" onclick="startRoute()">Route starten</button>
+      </div>
+    </section>
+
+<script src="home.js"></script>
+</body>
+</html>
