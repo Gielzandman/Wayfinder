@@ -13,9 +13,9 @@
       <div class="brand">Wayfinder</div>
       <div class="brand-small">Windesheim companion</div>
       <nav class="menu">
-        <a href="index.html">Home</a>
-        <a href="map.html">Map</a>
-        <a href="">Profile</a>
+        <a href="index.html"><img src="home.svg" alt="Home" class="navbar-icons"> Home</a>
+        <a href="plattegrond.html"><img src="pin.svg" alt="Plattegrond" class="navbar-icons"> Plattegrond</a>
+        <a href=""><img src="profile.svg" alt="Profile" class="navbar-icons"> Profile</a>
       </nav>
     </div>
   </header>             
@@ -24,10 +24,12 @@
       <span class="step-home" onclick="showStep(1)">Waar zijn?</span>
       <span class="breadcrumb-arrow">›</span>
       <span id="bc-gebouw" class="step-link"></span>
-      <span class="breadcrumb-arrow hide-mobile">›</span>
-      <span id="bc-verdieping" class="step-link hide-mobile"></span>
-      <span class="breadcrumb-arrow hide-mobile">›</span>
-      <span id="bc-lokaal" class="step-link hide-mobile"></span>
+      <span class="breadcrumb-arrow">›</span>
+      <span id="bc-verdieping" class="step-link"></span>
+      <span class="breadcrumb-arrow">›</span>
+      <span id="bc-lokaal" class="step-link"></span>
+      <span class="breadcrumb-arrow">›</span>
+      <span id="bc-overview" class="step-link"></span>
     </div>
   </div>
     <section id="home">
@@ -36,40 +38,106 @@
         <div class="main-header-text">Waar moet je zijn?</div>
       </section> 
       <section class="zoeken">
-        <input
+        <div class="search-wrapper">
+          <img src="search.svg" alt="Zoeken" class="navbar-icons">
+          <input
             type="text"
             id="searchInput"
             placeholder="Zoek een lokaal, gebouw of faciliteit..."
             autocomplete="off"
-        >
+          >
+        </div>
+        
       </section>
       <section id="results"></section>
     </section>
 
     <section id="gebouw" style="display: none;">
       <h1>Gebouw kiezen</h1>
-      <div class="step-indicator">Stap 2 van 4</div>
+      <div class="step-indicator">Stap 1 van 4</div>
       <div id="gebouwen-list" class="grid-three"></div>
       <button class="back-btn" onclick="goBack()">← Terug</button>
     </section>
 
     <section id="verdieping" style="display: none;">
       <h1>Verdieping kiezen</h1>
-      <div class="step-indicator">Stap 3 van 4</div>
+      <div class="step-indicator">Stap 2 van 4</div>
       <div id="verdiepingen-list" class="grid-three"></div>
       <button class="back-btn" onclick="goBack()">← Terug</button>
     </section>
 
     <section id="lokaal" style="display: none;">
       <h1>Lokaal kiezen</h1>
-      <div class="step-indicator">Stap 4 van 4</div>
+      <div class="step-indicator">Stap 3 van 4</div>
       <div id="lokalen-list" class="grid-three"></div>
       <div class="actions">
         <button class="back-btn" onclick="goBack()">← Terug</button>
-        <button class="next-btn" onclick="startRoute()">Route starten</button>
+      </div>
+    </section>
+
+    <section id="route-overview" style="display: none;">
+      <h1>Route overview <span id="overview-lokaal-naam">T4.17</span></h1>
+      <span class="route-overview-header">
+        <button class="back-btn" onclick="goBack()">← Terug</button>
+        <div class="step-indicator-overview">Stap 4 van 4</div>
+      </span>
+      <div class="timer-container">
+        <div class="timer-header">
+          <img src="timer.svg" alt="timer" class="notification-icons">
+          <span>Je les begint over 8 minuten! Snelle binnendoor route voorgesteld</span>
+        </div>
+      </div>
+      <div class="elevator-container">
+        <div class="elevator-header">
+          <img src="warning.svg" alt="waarschuwing" class="notification-icons">
+          <span>Linker lift van het gebouw is defect. Neem de rechter lift!</span>
+        </div>
+      </div>
+      <div class="mini-map">
+        <img src="mini plattegrond.png" alt="Route preview" class="mini-map-img">
+      </div>
+
+      <div class="route-header">
+        <div class="route-info">
+          <div class="route-time">5 min</div>
+          <div class="route-distance">450 m</div>
+        </div>
+      </div>
+      
+      <div class="route-actions">
+        <button class="route-btn primary" onclick="startRoute()"><img src="navigation arrow.svg" alt="navigatie pijl" class="notification-icons">Start navigatie</button>
+      </div>
+    </div>
+    </section>
+
+    <section id="map-flow" style="display: none;">
+        <h1 id="map-title"></h1>
+        <div class="actions">
+        <button class="back-btn" onclick="goBack()">← Terug</button>
+      </div>
+        <div class="route-header-desc">
+          <div class="route-info-desc">
+            <div class="route-time-desc">Aankomst</div>
+            <div class="route-distance-desc">Afstand</div>
+          </div>
+        </div>
+        <div class="route-header">
+          <div class="route-info">
+            <div class="route-time">1 min</div>
+            <div class="route-distance">100 m</div>
+          </div>
+        </div>
+        <div class="route-progress">
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 80%;"></div>
+          </div>
+        </div>
+      <div class="map-container">
+        <img id="map-image-flow" src="route map.png" alt="Route naar lokaal">
       </div>
     </section>
 
 <script src="home.js"></script>
+
 </body>
 </html>

@@ -47,22 +47,24 @@ const campus = {
 
 let currentStep = 0;
 let selected = { gebouw: null, verdieping: null, lokaal: null };
-const steps = ["home", "gebouw", "verdieping", "lokaal"];
+const steps = ["home", "gebouw", "verdieping", "lokaal", "route-overview", "map-flow"];
 
 function showStep(stepIndex) {
   steps.forEach((step, i) => {
     document.getElementById(step).style.display = i === stepIndex ? "block" : "none";
   });
   currentStep = stepIndex;
+  console.log("Current step:", currentStep);
   updateStep();
 }
 
 function goBack() {
   if (currentStep > 0) showStep(currentStep - 1);
+  console.log("Current step after going back:", currentStep);
 }
 
 function goNext() {
-  if (currentStep < 3) showStep(currentStep + 1);
+  if (currentStep < 4) showStep(currentStep + 1);
 }
 
 function updateStep() {
@@ -70,10 +72,16 @@ function updateStep() {
     case 1: renderGebouwen(); break;
     case 2: renderVerdiepingen(); break;
     case 3: renderLokalen(); break;
+    case 4: renderRouteOverview(); break;
   }
   updateBreadcrumb();
 }
 
+function renderRouteOverview() {
+  if (selected.lokaal) {
+    document.getElementById('overview-lokaal-naam').textContent = selected.lokaal.code;
+  }
+}
 
 function renderGebouwen() {
   const container = document.getElementById("gebouwen-list");
@@ -139,15 +147,43 @@ function renderLokalen() {
     card.onclick = () => {
       selected.lokaal = lokaal;
       renderLokalen();
+      goNext();
     };
     container.appendChild(card);
   });
 }
 
+let routeTarget = null;
+
+function renderMap(target = null) {
+  currentStep = 5;
+  const mapSection = document.getElementById('map-flow');
+  const mapTitle = document.getElementById('map-title');
+  
+  steps.forEach(step => document.getElementById(step).style.display = 'none');
+  document.getElementById('breadcrumb').style.display = 'none';
+  
+  // Map tonen
+  mapSection.style.display = 'block';
+  
+  if (target) {
+    mapTitle.textContent = `Route naar ${target.code}`;
+  } else {
+    mapTitle.textContent = '<p>Geen route geselecteerd.</p>';
+  }
+}
+
+function showHome() {
+  showStep(0);
+}
+
 function startRoute() {
   if (selected.lokaal) {
-    const path = `gebouw ${selected.gebouw}, verdieping ${selected.verdieping} - ${selected.lokaal.code}`;
-    alert(`Route starten naar ${path}! `);
+    renderMap({
+      code: selected.lokaal.code,
+      gebouw: selected.gebouw,
+      verdieping: selected.verdieping
+    });
   }
 }
 
@@ -202,7 +238,7 @@ function updateBreadcrumb() {
     bcGebouw.textContent = "";
   }
   
-  if (currentStep === 3 && selected.verdieping !== null) {
+  if (currentStep >= 3 && selected.verdieping !== null) {
     bcVerdieping.textContent = `Verdieping ${selected.verdieping}`;
     bcVerdieping.className = "step-link";
     bcVerdieping.onclick = () => showStep(3);
@@ -210,7 +246,13 @@ function updateBreadcrumb() {
     bcVerdieping.textContent = "";
   }
  
-  bcLokaal.textContent = "";
+  if (currentStep === 4 && selected.lokaal !== null) {
+    bcLokaal.textContent = `Lokaal ${selected.lokaal.code}`;
+    bcLokaal.className = "step-link";
+    bcLokaal.onclick = () => showStep(4);
+  } else {
+    bcLokaal.textContent = "";
+  }
 }
 
 function renderResults(list) {
@@ -229,7 +271,7 @@ function renderResults(list) {
       card.innerHTML = `
         <div class="result-code">${item.code}</div>
         <div class="result-meta">
-          <span>${item.gebouw.naam}</span> · <span>Verdieping ${item.verdieping}</span>
+          <span>Gebouw ${item.gebouw}</span> · <span>Verdieping ${item.verdieping}</span>
           ${item.vleugel ? ` · <span>${item.vleugel}</span>` : ""}
         </div>
       `;
@@ -238,6 +280,7 @@ function renderResults(list) {
         selected.verdieping = item.verdieping;
         selected.lokaal = item;
         showStep(3);
+        console.log("Selected lokaal:", selected);
         renderLokalen();
       };
     } else {
@@ -263,7 +306,6 @@ function filterSpaces(query) {
   );
   renderResults(matches);
 }
-
 
 document.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("searchInput");
